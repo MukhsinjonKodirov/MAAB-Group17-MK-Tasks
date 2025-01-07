@@ -1,6 +1,8 @@
 -- Puzzle 1 Answer
 
-select Workflow, sum(Case1+Case2+Case3) as SuccessfulCases from #WorkflowCases
+select Workflow,
+       sum(Case1+Case2+Case3) as SuccessfulCases
+from #WorkflowCases
 group by Workflow
 
 -- Puzzle 2 Answer
@@ -13,14 +15,18 @@ Order by FirstItem
 
 -- Puzzle 3 Answer
 
-select * from #Orders
+select * 
+from #Orders
 where CustomerID in ( 
       select distinct CustomerID from #Orders
-	  where DeliveryState = 'CA')
+      where DeliveryState = 'CA')
 and deliverystate = 'TX'
 
 -- Puzzle 4 Answer
 
-select customerID, Cellular, Work, Home
+select customerID,
+       Cellular,
+       Work,
+       Home
 from #PhoneDirectory
 Pivot (max(PhoneNumber) for Type in (Cellular, Home, Work)) as PVT
