@@ -1,0 +1,143 @@
+use W3Resource
+
+-- Question 1
+
+select sum(purch_amt) as Sum 
+from W3Resource.Inventory.Orders
+
+-- Question 2
+
+select avg(purch_amt)  as average
+from W3Resource.Inventory.Orders
+
+-- Question 3
+
+select count (distinct salesman_id) as count
+from W3Resource.Inventory.Orders
+
+-- Question 4
+
+select count(customer_id) as count
+from W3Resource.Inventory.Customer
+
+-- Question 5
+
+select count(customer_id)
+from W3Resource.Inventory.Customer
+where grade > 0 and grade is not NULL
+
+-- Question 6
+
+select max(purch_amt) as MaxPurchAmt
+from W3Resource.Inventory.Orders
+
+-- Question 7
+
+select min(purch_amt) as MinPurchAmt
+from W3Resource.Inventory.Orders
+
+-- Question 8
+
+select city, max(grade) as MaxGrade
+from W3Resource.Inventory.Customer
+group by city
+order by MaxGrade
+
+-- Question 9
+
+select customer_id, max(purch_amt) as Maximum
+from W3Resource.Inventory.Orders
+group by customer_id
+order by customer_id
+
+-- Question 10
+
+select customer_id, ord_date, max(purch_amt)
+from W3Resource.Inventory.Orders
+group by customer_id, ord_date
+order by customer_id, ord_date
+
+-- Question 11
+
+select salesman_id, max(purch_amt) as Max
+from W3Resource.Inventory.Orders
+where ord_date = '2012-08-17'
+group by salesman_id
+
+-- Question 12
+
+select customer_id, ord_date, max(purch_amt) as HighestAmt
+from W3Resource.Inventory.Orders
+where purch_amt > 2000
+group by customer_id, ord_date
+order by customer_id, HighestAmt
+
+-- Question 13
+
+select customer_id, ord_date, max(purch_amt) as Amt
+from W3Resource.Inventory.Orders
+where purch_amt between 2000 and 6000
+group by customer_id, ord_date
+
+-- Question 14
+
+select customer_id, ord_date, max(purch_amt) as Amt
+from W3Resource.Inventory.Orders
+where purch_amt in (2000, 3000, 5760, 6000)
+group by customer_id, ord_date
+
+-- Question 15
+
+select customer_id, max(purch_amt) as Max
+from W3Resource.Inventory.Orders
+where customer_id between 3002 and 3007
+group by customer_id
+
+
+-- Question 16
+
+select customer_id, max(purch_amt) as Max
+from W3Resource.Inventory.Orders
+where customer_id between 3002 and 3007
+group by customer_id
+having Max(purch_amt) > 1000
+
+
+-- Question 18
+
+select count(ord_no) as Count
+from W3Resource.Inventory.Orders
+where ord_date = '2012-08-17' 
+
+
+-- Question 19
+
+select count(salesman_id) as count
+from W3Resource.Inventory.Salesman
+
+-- Question 20
+
+select ord_date, salesman_id, count(ord_no)
+from W3Resource.Inventory.Orders
+group by ord_no, ord_date, salesman_id
+order by ord_date, salesman_id
+
+
+-- Question 22
+
+select count(pro_id) as NumOfProd
+from item_mast
+where pro_price >= 350
+
+
+-- Question 23
+
+select avg(pro_price) as Avg, pro_com 
+from item_mast
+group by pro_com
+
+-- Question 25
+
+select emp_dept, count( distinct emp_idno) as Count
+from emp_details
+group by emp_dept
