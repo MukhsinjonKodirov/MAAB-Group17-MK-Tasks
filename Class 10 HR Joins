@@ -1,0 +1,145 @@
+use W3Resource
+
+--HR database exercises on Joins
+
+-- Exercise 1
+
+select first_name, last_name, e.department_id, d.department_name from W3Resource.HR.Employees E left join
+W3Resource.HR.Departments D on E.department_id = d.department_id
+
+-- Exercise 2
+
+select e.first_name, e.last_name, d.department_name, l.city, l.state_province
+from W3Resource.HR.Employees E join
+     W3Resource.hr.Departments D on E.department_id = d.department_id 
+	 join W3Resource.hr.Locations L on d.location_id = l.location_id
+
+-- Exercise 3
+
+select e.first_name, e.last_name, e.salary, G.grade_level
+from W3Resource.hr.Employees E join W3Resource.hr.Job_Grades G
+on E.salary between G.lowest_sal and G.highest_sal
+
+-- Exercise 4
+
+select e.first_name, e.last_name, D.department_id, D.department_name
+from W3Resource.HR.Departments D join W3Resource.HR.Employees E
+on D.department_id = E.department_id
+where d.department_id in (40, 80)
+
+-- Exercice 5
+
+select e.first_name, e.last_name, d.department_name, l.city, l.state_province
+from HR.Departments D join HR.Employees E on D.department_id = E.department_id
+join HR.Locations L on D.location_id = L.location_id
+where e.first_name like '%z%'
+
+-- Exercise 6
+
+select e.first_name, last_name, d.department_id, d.department_name
+from hr.Departments D left join hr.Employees E
+on d.department_id = e.department_id
+order by first_name, last_name
+
+-- Exercise 7
+
+select e.first_name, e.last_name, e.salary 
+from HR.Employees E inner join HR.Employees S
+on E.salary < S.salary and s.employee_id = 182
+
+-- Exercise 8
+
+select e.first_name as Employee, m.first_name as Manager
+from hr.Employees E join hr.Employees M
+on m.employee_id = e.manager_id
+
+-- Exercise 9
+
+select d.department_name, L.city, l.state_province
+from hr.Departments D left join hr.Locations L  on d.location_id = l.location_id
+
+-- Exercise 10
+
+select first_name, last_name, d.department_id, d.department_name 
+from hr.Employees E left join hr.Departments D on e.department_id = D.department_id
+
+-- Exercise 11
+
+select e.first_name as Employee, m.first_name as Manager 
+from hr.Employees E left outer join hr.Employees M
+on M.employee_id = e.manager_id
+order by e.first_name
+
+-- Exercise 12
+
+select e.first_name, e.last_name, e.department_id
+from hr.Employees E join hr.Employees Emp
+on e.department_id = emp.department_id and emp.last_name = 'Taylor'
+
+-- Exxercise 13
+
+select j.job_title, d.department_name, e.first_name, start_date
+from HR.Employees E 
+     join HR.Job_History H on E.employee_id = H.employee_id
+     join HR.Jobs J on h.job_id = J.job_id
+     join HR.Departments D on D.department_id = h.department_id 
+where start_date >= '1993-01-01' and start_date <= '1997-08-31'
+
+-- Exercise 14
+
+select j.job_title, e.first_name, j.max_salary - e.salary as Difference
+from hr.Employees E join hr.Jobs J on e.job_id = J.job_id
+order by Difference desc
+
+-- Exercise 15
+
+select d.department_name, AVG(salary), count(e.employee_id)  
+from hr.Employees E join hr.Departments D on e.department_id = d.department_id 
+group by d.department_name
+
+-- Exercise 16
+
+select job_title, first_name, max_salary - salary as Salary_Difference 
+from hr.Employees E join hr.Jobs J on e.job_id = j.job_id
+where department_id = 80
+
+-- Exercise 17
+
+select country_name, city, department_name
+from hr.Countries H join hr.Locations L on h.country_id = l.country_id
+     join hr.Departments D on l.location_id = d.location_id
+order by country_name, city
+
+-- Exercise 18
+
+select department_name, last_name + ' ' + first_name As Manager_Name
+from hr.Departments D join hr.Employees E on d.manager_id = e.employee_id
+
+
+-- Exercise 19
+
+select job_title, avg(salary)
+from hr.Employees E join hr.Jobs J on e.job_id = j.job_id
+group by job_title
+
+
+-- Exercise 20
+
+select e.employee_id, start_date, end_date, j.job_id, e.department_id
+from hr.Employees E join hr.Job_History J on E.employee_id = j.employee_id
+where salary >= 12000
+
+-- Exercise 21
+
+select country_name, city, count(d.department_id)
+from hr.Employees E left join hr.Departments D on e.department_id = d.department_id
+     join hr.Locations L on d.location_id = l.location_id
+	 join hr.Countries C on c.country_id = l.country_id
+group by country_name, city, d.department_id
+having count(d.department_id) > 2
+
+-- Exercise 22
+
+select department_name, first_name, city
+from hr.Employees E join hr.Departments D on e.employee_id = d.manager_id 
+                    join hr.Locations L on d.location_id = l.location_id  
