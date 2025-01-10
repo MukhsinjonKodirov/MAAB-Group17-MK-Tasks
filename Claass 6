@@ -1,0 +1,114 @@
+use W3Resource
+/* Task 1
+Question1 */
+
+select salesman_id as ID, name, city from W3Resource.Inventory.Salesman
+where city = 'London'
+
+Union
+
+(select customer_id, cust_name, city from W3Resource.Inventory.Customer
+where city = 'London')
+
+-- Question 2
+
+select salesman_id, city from W3Resource.Inventory.Salesman
+union
+(select salesman_id, city from W3Resource.Inventory.Customer)
+
+-- Question 3
+
+select salesman_id, customer_id from W3Resource.Inventory.orders
+Union
+(select salesman_id, customer_id from W3Resource.Inventory.Customer)
+
+-- Question 4
+SELECT a.salesman_id, name, ord_no, 'highest on' as HighLow, ord_date
+FROM inventory.Salesman a, inventory.Orders b
+WHERE a.salesman_id = b.salesman_id
+AND b.purch_amt = (
+    SELECT MAX(purch_amt)s
+    FROM inventory.Orders c
+    WHERE c.ord_date = b.ord_date)
+
+union
+
+SELECT a.salesman_id, name, ord_no, 'lowest on', ord_date
+FROM inventory.Salesman a, inventory.Orders b
+WHERE a.salesman_id = b.salesman_id
+AND b.purch_amt = (
+    SELECT MIN(purch_amt)
+    FROM inventory.Orders c
+    WHERE c.ord_date = b.ord_date)
+
+-- Question 5
+(SELECT a.salesman_id, name, ord_no, 'highest on' as HighLow, ord_date
+FROM inventory.Salesman a, inventory.Orders b
+WHERE a.salesman_id = b.salesman_id
+AND b.purch_amt = (
+    SELECT MAX(purch_amt)s
+    FROM inventory.Orders c
+    WHERE c.ord_date = b.ord_date)
+
+union
+
+SELECT a.salesman_id, name, ord_no, 'lowest on', ord_date
+FROM inventory.Salesman a, inventory.Orders b
+WHERE a.salesman_id = b.salesman_id
+AND b.purch_amt = (
+    SELECT MIN(purch_amt)
+    FROM inventory.Orders c
+    WHERE c.ord_date = b.ord_date))
+order by ord_no
+
+-- Question 6
+
+select s.salesman_id, name, c.cust_name, commission
+from Inventory.Salesman s, Inventory.Customer c
+where s.city = c.city
+
+Union
+
+SELECT s.salesman_id, name, 'NO MATCH', s.commission
+FROM Inventory.Salesman s
+WHERE city not in
+    (SELECT city
+     FROM Inventory.Customer)
+order by name
+
+-- Question 7
+
+select s.salesman_id, s.name, s.city, 'Match' as "Check_Column"
+from Inventory.Salesman s, Inventory.Customer c
+where s.city = c.city
+union
+select s.salesman_id, s.name, s.city, 'No Match'
+From Inventory.customer c, Inventory.salesman s
+where s.city not in
+(select city from Inventory.Customer)
+
+-- Question 8
+
+select *, 'High' as "High_Low" from Inventory.Customer
+where grade >= 300
+union
+select *, 'Low' as "High_Low" from Inventory.Customer
+where grade < 300
+order by grade
+
+
+-- Question 9
+
+SELECT a.customer_id as "ID", a.cust_name as "NAME"
+FROM Inventory.customer a
+WHERE (SELECT COUNT(*)
+     FROM Inventory.Orders b, Inventory.Customer a
+     WHERE a.customer_id = b.customer_id) > 1
+
+union
+
+SELECT a.salesman_id as "ID", a.name as "NAME"
+FROM Inventory.Salesman a
+WHERE (SELECT COUNT(*)
+     FROM Inventory.Orders b, Inventory.Customer a
+     WHERE a.salesman_id = b.salesman_id) > 1
