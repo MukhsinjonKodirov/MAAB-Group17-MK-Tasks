@@ -1,0 +1,18 @@
+Task 1
+
+select Year1,
+case when Max1>=Max2 and Max1>=Max3 then Max1
+     when Max2>=Max3 and Max2>=Max3 then Max2
+     else Max3 end as Max
+from TestMax
+
+
+Task 2
+
+select name, 
+sum(case when fruit = 'Mango' then 1 else 0 end) as Mango,
+sum(case when fruit = 'Apple' then 1 else 0 end) as Apple,
+sum(case when fruit = 'Orange' then 1 else 0 end) as Orange,
+sum(case when fruit = 'Lichi' then 1 else 0 end) as Lichi
+from FruitCount 
+group by Name
