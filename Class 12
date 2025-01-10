@@ -1,0 +1,2 @@
+-- Find the first day of the month given anydate
+select datename(WEEKDAY, dateadd(day, 1-day(getdate()), getdate()))
