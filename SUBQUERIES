@@ -1,0 +1,140 @@
+-- Exercise 1
+
+select ord_no, purch_amt, ord_date, customer_id, salesman_id
+from Inventory.Orders
+where salesman_id = (
+		select salesman_id 
+		from Inventory.Salesman
+		where name = 'Paul Adam')
+
+-- Exercise 2
+
+select ord_no, purch_amt, ord_date, customer_id, salesman_id
+from Inventory.Orders
+where salesman_id = (
+		select salesman_id 
+		from Inventory.Salesman
+		where city = 'London')
+
+
+-- Exercise 3
+
+select ord_no, purch_amt, ord_date, customer_id, salesman_id
+from Inventory.Orders
+where salesman_id = (
+		select salesman_Id 
+		from inventory.Orders 
+		where customer_id = 3007)
+
+-- Exercise 4
+
+select ord_no, purch_amt, ord_date, customer_id, salesman_id
+from inventory.Orders
+where purch_amt > (
+		select avg(purch_amt) 
+		from Inventory.Orders 
+		where ord_date = '2012-10-10')
+
+-- Exercise 5
+
+select * 
+from Inventory.Orders
+where salesman_id = (
+		select salesman_id 
+		from Inventory.Salesman 
+		where city = 'New York')
+
+-- Exercice 6
+
+select *
+from Inventory.Salesman
+where salesman_id = (
+		select salesman_id 
+		from Inventory.Customer 
+		where city = 'Paris') 
+
+-- Exercice 7
+
+select * 
+from Inventory.Customer
+where customer_id = (
+	select salesman_id - 2001 
+	from Inventory.Salesman 
+	where name = 'Mc Lyon')
+
+-- Exercise 8
+select grade, count(*) as count
+from Inventory.Customer
+where grade > (select avg(grade) from Inventory.Customer where city = 'New York')
+group by grade
+
+-- Exercise 9
+
+select ord_no, purch_amt, ord_date, salesman_id
+from Inventory.Orders
+where salesman_id = (select top 1 salesman_id from Inventory.Salesman order by commission desc)
+
+-- Exercise 10
+
+select *
+from Inventory.Customer
+where customer_id in (
+		select customer_id
+		from Inventory.Orders
+		where ord_date = '2012-08-17')
+
+-- Exercise 11
+
+select salesman_id, name from Inventory.Salesman
+where salesman_id  in (
+select salesman_id from Inventory.Customer
+group by salesman_id
+having count(*) > 1)
+
+-- Exercise 13
+select ord_no, purch_amt, ord_date, customer_id, salesman_id
+from Inventory.Orders a 
+where a.purch_amt >= (select avg(b.purch_amt) from Inventory.Orders b
+						where a.customer_id = b.customer_id)
+
+select * from Inventory.Orders
+
+-- Exercise 18
+
+select * from Inventory.Salesman
+where salesman_ID in
+(select salesman_id
+from Inventory.Orders
+group by salesman_id
+having count(ord_no) > 1) 
+
+-- Exercise 19
+select * from Inventory.Salesman
+where city in
+(select distinct city from Inventory.Customer)
+
+-- Exercise 20
+
+select salesman_id, name, city, commission 
+from Inventory.Salesman
+where city = ANY(
+		select distinct city from Inventory.Customer)
+
+
+-- Exercise 21
+
+select *
+from Inventory.Salesman a
+where exists
+	(select * from Inventory.Customer b
+		where a.name < b.cust_name)
+
+-- Exercise 22
+
+
+select *
+from Inventory.Customer
+where grade > any
+(select grade from Inventory.Customer b
+ where b.city < 'New York')
+ 
