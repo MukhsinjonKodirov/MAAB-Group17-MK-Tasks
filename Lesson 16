@@ -1,0 +1,51 @@
+-- Excersise 1
+
+select match_no, (select country_name from SOCCER.soccer_country where country_id = D.team_id) as country
+from SOCCER.match_details D
+where match_no = 1
+
+-- Exercise 2
+
+select country_name
+from SOCCER.soccer_country 
+where country_id = (
+select team_id
+from SOCCER.match_details
+where play_stage = 'F' and win_lose = 'W')
+
+-- Exercise 3
+
+select match_no, play_stage, goal_score, audience
+from SOCCER.match_mast
+where audience = (select max(audience) from SOCCER.match_mast)
+
+-- Exercise 4
+
+select match_no
+from SOCCER.match_details
+where match_no in (
+select match_no
+from SOCCER.match_details
+where team_id = (select country_id from SOCCER.soccer_country where country_name = 'Germany'))
+and team_id = (select country_id from SOCCER.soccer_country where country_name = 'Poland')
+
+-- Exercise 5
+
+select match_no, play_stage, play_date, results, goal_score
+from SOCCER.match_mast
+where match_no =
+(select match_no
+from SOCCER.match_details
+where team_id = (select country_id from SOCCER.soccer_country where country_name = 'Portugal')
+or
+team_id = (select country_id from SOCCER.soccer_country where country_name = 'Hungary')
+group by match_no
+having count(distinct team_id) = 2)
+
+-- Exercise 6
+
+select match_no, (select country_name from SOCCER.soccer_country where D.team_id = soccer_country.country_id) as Country,
+(select player_name from SOCCER.player_mast where D.player_id = SOCCER.player_mast.player_id) as player_id, count(goal_id) as total_goals
+from SOCCER.goal_details D
+group by player_id, match_no, team_id
+order by match_no
