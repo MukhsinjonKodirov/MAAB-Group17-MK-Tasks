@@ -59,3 +59,59 @@ order by BirthDate
 
 select firstname, lastname, title, cast(BirthDate as date) as Birth_date
 from Employees
+
+-- Question 12
+
+select FirstName, LastName, FirstName + ' ' + Lastname as FullName
+from Employees
+
+-- Question 13
+
+select OrderID, ProductID, UnitPrice, Quantity, UnitPrice*Quantity as TotalPrice
+from OrderDetails
+order by OrderID, ProductID
+
+-- Question 14
+
+select count(*) as Customer_count 
+from Customers 
+
+-- Question 15
+
+select OrderDate
+from Orders
+order by OrderDate
+Offset 0 rows FETCH next 1 ROWS ONLY
+---------------------------------------
+select top 1 OrderDate
+from Orders
+order by OrderDate
+
+-- Question 16
+
+select distinct Country
+from Customers
+-----------------------
+select Country
+from Customers
+group by Country
+
+-- Question 17
+
+select ContactTitle, count(contacttitle) as Count
+from Customers
+group by ContactTitle
+order by Count desc
+
+
+-- Question 18
+
+select p.ProductID, p.ProductName, s.CompanyName
+from Products P left join Suppliers S on P.SupplierID = S.SupplierID
+order by ProductID
+
+-- Question 19
+
+select OrderID, cast(OrderDate as date) as OrderDate, S.CompanyName 
+from Orders O join Shippers S on O.ShipVia = S.ShipperID
+where OrderID < 10300
