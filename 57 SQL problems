@@ -1,0 +1,61 @@
+-- Question 1
+
+select * from Northwind.dbo.Shippers
+
+-- Question 2
+
+select CategoryName, Description
+from Categories
+
+-- Question 3
+
+select FirstName, LastName, HireDate
+from Employees
+where Title = 'Sales representative'
+
+-- Question 4
+
+select FirstName, LastName, HireDate
+from Employees
+where Title = 'Sales representative' and Country = 'USA'
+
+-- Question 5
+
+select OrderID, OrderDate, FirstName
+from Orders O right join Employees E on O.EmployeeID = e.EmployeeID 
+where E.EmployeeID = 5
+
+-- Question 6
+
+select SupplierID, ContactName, ContactTitle
+from Suppliers
+where ContactTitle not in ('Marketing Manager')
+
+-- Question 7
+
+select ProductID, ProductName
+from Products 
+where ProductName like '%queso%'
+
+-- Question 8
+
+select OrderID, CustomerID, ShipCountry
+from Orders
+where ShipCountry in ('France', 'Belgium')
+
+-- Question 9
+
+select OrderID, CustomerID, ShipCountry
+from Orders
+where ShipCountry in ('Brazil','Mexico','Argentina','Venezuela')
+
+-- Question 10
+
+select FirstName + ' ' + LastName, Title, BirthDate
+from Employees
+order by BirthDate
+
+-- Question 11
+
+select firstname, lastname, title, cast(BirthDate as date) as Birth_date
+from Employees
