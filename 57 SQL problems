@@ -115,3 +115,82 @@ order by ProductID
 select OrderID, cast(OrderDate as date) as OrderDate, S.CompanyName 
 from Orders O join Shippers S on O.ShipVia = S.ShipperID
 where OrderID < 10300
+
+-- Question 20
+
+select c.CategoryName, count(c.categoryName) as total
+from Products P join Categories C on P.CategoryID = C.CategoryID
+group by c.CategoryName
+order by total desc
+
+-- Question 21
+
+select Country, City, count(customerID) as Total
+from Customers
+group by Country, City
+order by total desc
+
+-- Question 22
+
+select ProductName, UnitsInStock, ReorderLevel, (UnitsInStock - ReorderLevel) as Difference
+from Products
+where UnitsInStock < ReorderLevel
+order by Difference
+
+
+-- Question 23
+
+select ProductID, ProductName, (UnitsInStock+UnitsOnOrder) as Total, ReorderLevel
+from Products
+where (UnitsInStock+UnitsOnOrder) < ReorderLevel
+
+-- Question 24
+
+select CustomerID, CompanyName, region
+from Customers
+order by case when Region is Null then 0 else 1 end desc, Region asc
+
+
+-- Question 24 with IIF
+
+select CustomerID, CompanyName, region
+from Customers
+order by iif(Region is Null, 1, 0), Region asc
+
+-- Question 25
+
+select top 3 ShipCountry, avg(freight) as Average
+from Orders
+group by ShipCountry
+order by avg(freight) desc
+
+-- Question 26
+
+select top 3 ShipCountry, avg(freight) as Average, year(orderdate) as order_year 
+from Orders
+where year(orderdate) = 2015
+group by ShipCountry, year(orderdate)
+order by avg(freight) desc
+
+-- Question 28
+
+select top 3 ShipCountry, avg(freight) as Average, year(orderdate) as order_year 
+from Orders
+where year(orderdate) = (select dateadd(year, -1, (max(orderdate)))
+from Orders)
+group by ShipCountry, year(orderdate)
+order by avg(freight) desc
+
+-- Question 29
+
+select E.EmployeeID, E.LastName, O.OrderID, ProductName, OD.Quantity
+from OrderDetails OD join Products P on OD.ProductID=P.ProductID
+left join Orders O on OD.OrderID=O.OrderID 
+left join Employees E on O.EmployeeID=E.EmployeeID
+order by OrderID, OD.ProductID
+
+-- Question 30
+
+select O.OrderID, C.CustomerID
+from Customers C left join Orders O on O.CustomerID=C.CustomerID
+where O.CustomerID is NULL
