@@ -194,3 +194,27 @@ order by OrderID, OD.ProductID
 select O.OrderID, C.CustomerID
 from Customers C left join Orders O on O.CustomerID=C.CustomerID
 where O.CustomerID is NULL
+
+-- Question 31
+
+Select	CustomerID
+From Customers
+Where	CustomerID	not	in	
+		(select	CustomerID	
+		from	Orders
+		where	EmployeeID	=	4)
+
+-- Question 32
+
+select C.CustomerID, C.CompanyName, O.OrderID, sum(UnitPrice*Quantity) as TotalOrderValue
+from Customers C join Orders O on O.CustomerID = C.CustomerID 
+join OrderDetails OD on OD.OrderID = O.OrderID
+where (UnitPrice*Quantity) >= 10000 and O.OrderDate between '2016.01.01' and '2017.01.01'
+group by c.CustomerID, c.CompanyName, o.OrderID
+
+-- Question 35
+
+select OrderID, EmployeeID, OrderDate
+FROM Orders
+WHERE OrderDate = DATEADD(DAY, -DATEDIFF(DAY, OrderDate, DATEADD(MONTH, 1, OrderDate)), DATEADD(MONTH, 1, OrderDate))
+ORDER BY EmployeeID, OrderID;
